@@ -1,0 +1,816 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Hospital Network Configuration Drift Sentinel</title>
+    <!-- Tailwind CSS CDN -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    <!-- FontAwesome / Lucide Icons CDN -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <!-- Chart.js CDN for interactive charts -->
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    <style>
+        body { background-color: #0f172a; color: #f8fafc; font-family: system-ui, -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif; }
+        .glass-panel { background: rgba(30, 41, 59, 0.85); backdrop-filter: blur(12px); border: 1px solid rgba(255, 255, 255, 0.08); }
+        .glass-card { background: #1e293b; border: 1px solid rgba(255, 255, 255, 0.06); }
+        .diff-added { background-color: rgba(16, 185, 129, 0.15); color: #34d399; }
+        .diff-removed { background-color: rgba(239, 68, 68, 0.15); color: #f87171; }
+        .diff-modified { background-color: rgba(245, 158, 11, 0.15); color: #fbbf24; }
+        ::-webkit-scrollbar { width: 6px; height: 6px; }
+        ::-webkit-scrollbar-track { background: #0f172a; }
+        ::-webkit-scrollbar-thumb { background: #334155; border-radius: 3px; }
+    </style>
+</head>
+<body class="h-screen flex overflow-hidden">
+
+    <!-- SIDEBAR NAVIGATION -->
+    <aside class="w-64 glass-panel flex flex-col justify-between p-4 border-r border-slate-800 z-20">
+        <div>
+            <!-- LOGO HEADER -->
+            <div class="flex items-center space-x-3 mb-8 px-2">
+                <div class="w-10 h-10 rounded-xl bg-gradient-to-tr from-cyan-500 to-blue-600 flex items-center justify-center text-white font-bold text-xl shadow-lg shadow-cyan-500/20">
+                    <i class="fa-solid fa-shield-virus"></i>
+                </div>
+                <div>
+                    <h1 class="font-bold text-slate-100 text-sm tracking-wide leading-tight">DRIFT SENTINEL</h1>
+                    <span class="text-xs text-cyan-400 font-medium">Hospital NetSec Engine</span>
+                </div>
+            </div>
+
+            <!-- NAVIGATION LINKS -->
+            <nav class="space-y-1">
+                <button onclick="switchTab('dashboard')" id="nav-dashboard" class="nav-btn w-full flex items-center space-x-3 px-3 py-2.5 rounded-lg text-sm font-medium transition-all bg-cyan-500/10 text-cyan-400 border border-cyan-500/20">
+                    <i class="fa-solid fa-chart-pie w-5"></i>
+                    <span>Dashboard</span>
+                </button>
+                <button onclick="switchTab('findings')" id="nav-findings" class="nav-btn w-full flex items-center space-x-3 px-3 py-2.5 rounded-lg text-sm font-medium text-slate-400 hover:text-slate-200 hover:bg-slate-800/60 transition-all">
+                    <i class="fa-solid fa-triangle-exclamation w-5"></i>
+                    <span>Drift Findings</span>
+                    <span id="badge-critical" class="ml-auto bg-red-500/20 text-red-400 text-xs px-2 py-0.5 rounded-full font-semibold border border-red-500/30">0</span>
+                </button>
+                <button onclick="switchTab('sites')" id="nav-sites" class="nav-btn w-full flex items-center space-x-3 px-3 py-2.5 rounded-lg text-sm font-medium text-slate-400 hover:text-slate-200 hover:bg-slate-800/60 transition-all">
+                    <i class="fa-solid fa-hospital-user w-5"></i>
+                    <span>Hospital Sites</span>
+                </button>
+                <button onclick="switchTab('devices')" id="nav-devices" class="nav-btn w-full flex items-center space-x-3 px-3 py-2.5 rounded-lg text-sm font-medium text-slate-400 hover:text-slate-200 hover:bg-slate-800/60 transition-all">
+                    <i class="fa-solid fa-network-wired w-5"></i>
+                    <span>Device Inventory</span>
+                </button>
+                <button onclick="switchTab('baselines')" id="nav-baselines" class="nav-btn w-full flex items-center space-x-3 px-3 py-2.5 rounded-lg text-sm font-medium text-slate-400 hover:text-slate-200 hover:bg-slate-800/60 transition-all">
+                    <i class="fa-solid fa-sliders w-5"></i>
+                    <span>Approved Baselines</span>
+                </button>
+                <button onclick="switchTab('compliance')" id="nav-compliance" class="nav-btn w-full flex items-center space-x-3 px-3 py-2.5 rounded-lg text-sm font-medium text-slate-400 hover:text-slate-200 hover:bg-slate-800/60 transition-all">
+                    <i class="fa-solid fa-check-double w-5"></i>
+                    <span>Compliance Rules</span>
+                </button>
+                <button onclick="switchTab('tickets')" id="nav-tickets" class="nav-btn w-full flex items-center space-x-3 px-3 py-2.5 rounded-lg text-sm font-medium text-slate-400 hover:text-slate-200 hover:bg-slate-800/60 transition-all">
+                    <i class="fa-solid fa-ticket w-5"></i>
+                    <span>Change Tickets</span>
+                </button>
+                <button onclick="switchTab('quality')" id="nav-quality" class="nav-btn w-full flex items-center space-x-3 px-3 py-2.5 rounded-lg text-sm font-medium text-slate-400 hover:text-slate-200 hover:bg-slate-800/60 transition-all">
+                    <i class="fa-solid fa-database w-5"></i>
+                    <span>Data Quality</span>
+                </button>
+                <button onclick="switchTab('audit')" id="nav-audit" class="nav-btn w-full flex items-center space-x-3 px-3 py-2.5 rounded-lg text-sm font-medium text-slate-400 hover:text-slate-200 hover:bg-slate-800/60 transition-all">
+                    <i class="fa-solid fa-receipt w-5"></i>
+                    <span>Audit Log Ledger</span>
+                </button>
+            </nav>
+        </div>
+
+        <!-- USER ROLE SWITCHER -->
+        <div class="border-t border-slate-800 pt-4">
+            <div class="flex items-center space-x-3 bg-slate-800/40 p-2.5 rounded-xl border border-slate-700/50">
+                <div class="w-8 h-8 rounded-full bg-cyan-500/20 text-cyan-400 flex items-center justify-center font-bold text-xs">
+                    <i class="fa-solid fa-user-shield"></i>
+                </div>
+                <div class="flex-1 min-w-0">
+                    <p id="user-display-name" class="text-xs font-semibold text-slate-200 truncate">Dr. Sarah Jenkins</p>
+                    <select id="role-selector" onchange="changeRole(this.value)" class="bg-transparent text-[11px] text-cyan-400 font-medium cursor-pointer outline-none">
+                        <option value="Administrator" class="bg-slate-900 text-slate-200">Administrator</option>
+                        <option value="Security Analyst" class="bg-slate-900 text-slate-200">Security Analyst</option>
+                        <option value="Network Engineer" class="bg-slate-900 text-slate-200">Network Engineer</option>
+                    </select>
+                </div>
+            </div>
+        </div>
+    </aside>
+
+    <!-- MAIN CONTENT AREA -->
+    <main class="flex-1 flex flex-col min-w-0 overflow-hidden bg-slate-950">
+        
+        <!-- TOP APP BAR -->
+        <header class="h-16 glass-panel border-b border-slate-800 flex items-center justify-between px-6 z-10">
+            <div class="flex items-center space-x-4">
+                <h2 id="page-title" class="text-lg font-bold text-slate-100">Security Command Dashboard</h2>
+                <span class="bg-emerald-500/10 text-emerald-400 text-xs px-2.5 py-1 rounded-full border border-emerald-500/20 flex items-center gap-1.5">
+                    <span class="w-2 h-2 rounded-full bg-emerald-400 animate-pulse"></span> Sentinel Core Active
+                </span>
+            </div>
+
+            <!-- GLOBAL ACTIONS -->
+            <div class="flex items-center space-x-3">
+                <button onclick="triggerScan()" class="bg-gradient-to-r from-cyan-500 to-blue-600 hover:from-cyan-400 hover:to-blue-500 text-white font-semibold text-xs px-4 py-2 rounded-lg transition-all shadow-md shadow-cyan-500/20 flex items-center space-x-2">
+                    <i class="fa-solid fa-arrows-rotate"></i>
+                    <span>Run Drift Scan</span>
+                </button>
+                <a href="/reports/drift" target="_blank" class="bg-slate-800 hover:bg-slate-700 text-slate-200 text-xs font-semibold px-3.5 py-2 rounded-lg border border-slate-700 transition-all flex items-center space-x-2">
+                    <i class="fa-solid fa-file-pdf text-red-400"></i>
+                    <span>Download Report</span>
+                </a>
+            </div>
+        </header>
+
+        <!-- CONTAINER FOR PAGE VIEWS -->
+        <div class="flex-1 overflow-y-auto p-6 space-y-6">
+
+            <!-- 1. DASHBOARD VIEW -->
+            <div id="view-dashboard" class="space-y-6">
+                <!-- KPI METRICS GRID -->
+                <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-4">
+                    <div class="glass-card p-4 rounded-xl border border-slate-800">
+                        <div class="flex justify-between items-start">
+                            <div>
+                                <p class="text-xs font-medium text-slate-400">Total Hospital Sites</p>
+                                <h3 id="kpi-sites" class="text-2xl font-bold text-slate-100 mt-1">10</h3>
+                            </div>
+                            <div class="p-2 bg-blue-500/10 text-blue-400 rounded-lg"><i class="fa-solid fa-hospital"></i></div>
+                        </div>
+                        <p class="text-[11px] text-slate-400 mt-3 flex items-center gap-1">
+                            <i class="fa-solid fa-network-wired text-cyan-400"></i> <span id="kpi-devices">110</span> Network Devices Monitored
+                        </p>
+                    </div>
+
+                    <div class="glass-card p-4 rounded-xl border border-slate-800">
+                        <div class="flex justify-between items-start">
+                            <div>
+                                <p class="text-xs font-medium text-slate-400">Active Drift Findings</p>
+                                <h3 id="kpi-findings" class="text-2xl font-bold text-slate-100 mt-1">35</h3>
+                            </div>
+                            <div class="p-2 bg-amber-500/10 text-amber-400 rounded-lg"><i class="fa-solid fa-triangle-exclamation"></i></div>
+                        </div>
+                        <p class="text-[11px] text-amber-400 mt-3 flex items-center gap-1">
+                            <i class="fa-solid fa-circle-exclamation"></i> <span id="kpi-unauthorized">35</span> Unauthorized Changes
+                        </p>
+                    </div>
+
+                    <div class="glass-card p-4 rounded-xl border border-slate-800">
+                        <div class="flex justify-between items-start">
+                            <div>
+                                <p class="text-xs font-medium text-slate-400">Critical Risk Mismatches</p>
+                                <h3 id="kpi-critical" class="text-2xl font-bold text-red-400 mt-1">24</h3>
+                            </div>
+                            <div class="p-2 bg-red-500/10 text-red-400 rounded-lg"><i class="fa-solid fa-radiation"></i></div>
+                        </div>
+                        <p class="text-[11px] text-slate-400 mt-3 flex items-center gap-1">
+                            <i class="fa-solid fa-shield-halved text-red-400"></i> Immediate Action Required
+                        </p>
+                    </div>
+
+                    <div class="glass-card p-4 rounded-xl border border-slate-800">
+                        <div class="flex justify-between items-start">
+                            <div>
+                                <p class="text-xs font-medium text-slate-400">Compliance Pass Rate</p>
+                                <h3 id="kpi-compliance-rate" class="text-2xl font-bold text-emerald-400 mt-1">94.2%</h3>
+                            </div>
+                            <div class="p-2 bg-emerald-500/10 text-emerald-400 rounded-lg"><i class="fa-solid fa-circle-check"></i></div>
+                        </div>
+                        <p class="text-[11px] text-slate-400 mt-3 flex items-center gap-1">
+                            <i class="fa-solid fa-lock text-emerald-400"></i> HIPAA & NIS2 Rules Enforced
+                        </p>
+                    </div>
+                </div>
+
+                <!-- CHARTS ROW -->
+                <div class="grid grid-cols-1 lg:grid-cols-3 gap-6">
+                    <div class="glass-card p-5 rounded-xl border border-slate-800 lg:col-span-2">
+                        <div class="flex justify-between items-center mb-4">
+                            <h3 class="font-semibold text-slate-200 text-sm">Drift Findings by Hospital Site</h3>
+                            <span class="text-xs text-slate-400">10 Campuses</span>
+                        </div>
+                        <div class="h-64 relative">
+                            <canvas id="chart-site-drift"></canvas>
+                        </div>
+                    </div>
+
+                    <div class="glass-card p-5 rounded-xl border border-slate-800">
+                        <div class="flex justify-between items-center mb-4">
+                            <h3 class="font-semibold text-slate-200 text-sm">Risk Severity Distribution</h3>
+                            <span class="text-xs text-slate-400">Composite Score</span>
+                        </div>
+                        <div class="h-64 relative flex items-center justify-center">
+                            <canvas id="chart-risk-dist"></canvas>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- TOP RISKY DEVICES TABLE -->
+                <div class="glass-card rounded-xl border border-slate-800 p-5">
+                    <h3 class="font-semibold text-slate-200 text-sm mb-4">Top High-Risk Network Devices</h3>
+                    <div class="overflow-x-auto">
+                        <table class="w-full text-left border-collapse text-xs">
+                            <thead>
+                                <tr class="text-slate-400 border-b border-slate-800 pb-2">
+                                    <th class="py-2">Device ID</th>
+                                    <th class="py-2">Hostname</th>
+                                    <th class="py-2">Site</th>
+                                    <th class="py-2">Device Type</th>
+                                    <th class="py-2">Max Risk Score</th>
+                                    <th class="py-2">Action</th>
+                                </tr>
+                            </thead>
+                            <tbody id="table-top-risky" class="divide-y divide-slate-800/50 text-slate-300">
+                                <!-- Dynamic rows -->
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+            </div>
+
+            <!-- 2. DRIFT FINDINGS VIEW -->
+            <div id="view-findings" class="space-y-6 hidden">
+                <div class="flex flex-wrap gap-3 items-center justify-between bg-slate-900 p-4 rounded-xl border border-slate-800">
+                    <div class="flex items-center gap-3">
+                        <input type="text" id="filter-search" onkeyup="renderFindings()" placeholder="Search hostname, device ID..." class="bg-slate-800 border border-slate-700 text-slate-200 text-xs rounded-lg px-3 py-2 outline-none w-64">
+                        <select id="filter-severity" onchange="renderFindings()" class="bg-slate-800 border border-slate-700 text-slate-200 text-xs rounded-lg px-3 py-2 outline-none">
+                            <option value="">All Severities</option>
+                            <option value="CRITICAL">CRITICAL</option>
+                            <option value="HIGH">HIGH</option>
+                            <option value="MEDIUM">MEDIUM</option>
+                            <option value="LOW">LOW</option>
+                        </select>
+                        <select id="filter-auth" onchange="renderFindings()" class="bg-slate-800 border border-slate-700 text-slate-200 text-xs rounded-lg px-3 py-2 outline-none">
+                            <option value="">All Authorization Statuses</option>
+                            <option value="Unauthorized">Unauthorized</option>
+                            <option value="Authorized">Authorized</option>
+                            <option value="Expired Authorization">Expired</option>
+                        </select>
+                    </div>
+                    <span id="findings-count-label" class="text-xs text-slate-400">Showing 0 findings</span>
+                </div>
+
+                <div class="glass-card rounded-xl border border-slate-800 overflow-hidden">
+                    <div class="overflow-x-auto">
+                        <table class="w-full text-left border-collapse text-xs">
+                            <thead class="bg-slate-900/80 text-slate-400 uppercase tracking-wider font-semibold border-b border-slate-800">
+                                <tr>
+                                    <th class="px-4 py-3">Finding ID</th>
+                                    <th class="px-4 py-3">Site / Device</th>
+                                    <th class="px-4 py-3">Field Changed</th>
+                                    <th class="px-4 py-3">Baseline vs Current</th>
+                                    <th class="px-4 py-3">Severity</th>
+                                    <th class="px-4 py-3">Authorization</th>
+                                    <th class="px-4 py-3">Risk Score</th>
+                                    <th class="px-4 py-3 text-right">Details</th>
+                                </tr>
+                            </thead>
+                            <tbody id="table-findings" class="divide-y divide-slate-800/60 text-slate-300">
+                                <!-- Dynamic findings -->
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+            </div>
+
+            <!-- 3. SITES VIEW -->
+            <div id="view-sites" class="space-y-6 hidden">
+                <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4" id="sites-grid">
+                    <!-- Dynamic site cards -->
+                </div>
+            </div>
+
+            <!-- 4. DEVICES VIEW -->
+            <div id="view-devices" class="space-y-6 hidden">
+                <div class="glass-card rounded-xl border border-slate-800 p-5">
+                    <h3 class="font-semibold text-slate-200 text-sm mb-4">Device Inventory & Health Status</h3>
+                    <div class="overflow-x-auto">
+                        <table class="w-full text-left text-xs">
+                            <thead class="bg-slate-900 text-slate-400 border-b border-slate-800">
+                                <tr>
+                                    <th class="p-3">Device ID</th>
+                                    <th class="p-3">Hostname</th>
+                                    <th class="p-3">Site</th>
+                                    <th class="p-3">Type</th>
+                                    <th class="p-3">Zone</th>
+                                    <th class="p-3">IP Address</th>
+                                    <th class="p-3">Firmware</th>
+                                    <th class="p-3">Status</th>
+                                </tr>
+                            </thead>
+                            <tbody id="table-devices" class="divide-y divide-slate-800 text-slate-300">
+                                <!-- Dynamic devices -->
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+            </div>
+
+            <!-- 5. BASELINES VIEW -->
+            <div id="view-baselines" class="space-y-6 hidden">
+                <div class="glass-card rounded-xl border border-slate-800 p-5">
+                    <div class="flex justify-between items-center mb-4">
+                        <h3 class="font-semibold text-slate-200 text-sm">Approved Device Baselines</h3>
+                        <button onclick="alert('Baseline template creation available for Network Engineers.')" class="bg-cyan-600 hover:bg-cyan-500 text-white text-xs px-3 py-1.5 rounded-lg">+ Propose Baseline</button>
+                    </div>
+                    <div class="grid grid-cols-1 md:grid-cols-2 gap-4" id="baselines-grid">
+                        <!-- Dynamic baselines -->
+                    </div>
+                </div>
+            </div>
+
+            <!-- 6. COMPLIANCE VIEW -->
+            <div id="view-compliance" class="space-y-6 hidden">
+                <div class="glass-card rounded-xl border border-slate-800 p-5">
+                    <h3 class="font-semibold text-slate-200 text-sm mb-4">Active Compliance Security Policies</h3>
+                    <div class="overflow-x-auto">
+                        <table class="w-full text-left text-xs">
+                            <thead class="bg-slate-900 text-slate-400 border-b border-slate-800">
+                                <tr>
+                                    <th class="p-3">Rule ID</th>
+                                    <th class="p-3">Name</th>
+                                    <th class="p-3">Category</th>
+                                    <th class="p-3">Target Field</th>
+                                    <th class="p-3">Expected Value</th>
+                                    <th class="p-3">Severity</th>
+                                    <th class="p-3">Status</th>
+                                </tr>
+                            </thead>
+                            <tbody id="table-compliance" class="divide-y divide-slate-800 text-slate-300">
+                                <!-- Dynamic rules -->
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+            </div>
+
+            <!-- 7. TICKETS VIEW -->
+            <div id="view-tickets" class="space-y-6 hidden">
+                <div class="glass-card rounded-xl border border-slate-800 p-5">
+                    <h3 class="font-semibold text-slate-200 text-sm mb-4">CAB Change Ticket Registry</h3>
+                    <div class="overflow-x-auto">
+                        <table class="w-full text-left text-xs">
+                            <thead class="bg-slate-900 text-slate-400 border-b border-slate-800">
+                                <tr>
+                                    <th class="p-3">Ticket ID</th>
+                                    <th class="p-3">Site / Device</th>
+                                    <th class="p-3">Requester</th>
+                                    <th class="p-3">Approver</th>
+                                    <th class="p-3">Description</th>
+                                    <th class="p-3">Window Start</th>
+                                    <th class="p-3">Window End</th>
+                                    <th class="p-3">Status</th>
+                                </tr>
+                            </thead>
+                            <tbody id="table-tickets" class="divide-y divide-slate-800 text-slate-300">
+                                <!-- Dynamic tickets -->
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+            </div>
+
+            <!-- 8. DATA QUALITY VIEW -->
+            <div id="view-quality" class="space-y-6 hidden">
+                <div class="grid grid-cols-1 md:grid-cols-3 gap-4" id="quality-kpis">
+                    <!-- Data quality metrics -->
+                </div>
+                <div class="glass-card rounded-xl border border-slate-800 p-5">
+                    <h3 class="font-semibold text-slate-200 text-sm mb-2">Automated Data Cleaning Pipeline Report</h3>
+                    <p class="text-xs text-slate-400 mb-4">Raw configuration snapshots intentionally injected with invalid IP strings, malformed VLAN tokens, missing values, and corrupted timestamps were cleaned and validated before drift processing.</p>
+                    <pre id="quality-json-display" class="bg-slate-900 p-4 rounded-lg text-xs text-cyan-300 font-mono overflow-x-auto border border-slate-800"></pre>
+                </div>
+            </div>
+
+            <!-- 9. AUDIT LOG VIEW -->
+            <div id="view-audit" class="space-y-6 hidden">
+                <div class="glass-card rounded-xl border border-slate-800 p-5">
+                    <h3 class="font-semibold text-slate-200 text-sm mb-4">Immutable Audit Log Ledger</h3>
+                    <div class="overflow-x-auto">
+                        <table class="w-full text-left text-xs">
+                            <thead class="bg-slate-900 text-slate-400 border-b border-slate-800">
+                                <tr>
+                                    <th class="p-3">Timestamp</th>
+                                    <th class="p-3">User</th>
+                                    <th class="p-3">Role</th>
+                                    <th class="p-3">Action</th>
+                                    <th class="p-3">Object</th>
+                                    <th class="p-3">Details / Reason</th>
+                                </tr>
+                            </thead>
+                            <tbody id="table-audit" class="divide-y divide-slate-800 text-slate-300">
+                                <!-- Dynamic audit -->
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+            </div>
+
+        </div>
+    </main>
+
+    <!-- FINDING DETAIL MODAL -->
+    <div id="modal-finding-details" class="fixed inset-0 bg-slate-950/80 backdrop-blur-md hidden flex items-center justify-center p-4 z-50">
+        <div class="bg-slate-900 border border-slate-700 rounded-2xl max-w-4xl w-full max-h-[90vh] flex flex-col shadow-2xl overflow-hidden">
+            <!-- Modal Header -->
+            <div class="p-5 border-b border-slate-800 flex justify-between items-center bg-slate-900">
+                <div class="flex items-center space-x-3">
+                    <span id="modal-severity-badge" class="px-2.5 py-1 rounded-md text-xs font-bold bg-red-500/20 text-red-400 border border-red-500/30">CRITICAL</span>
+                    <div>
+                        <h3 id="modal-finding-id" class="text-base font-bold text-slate-100">FND-00102-TELNET</h3>
+                        <p id="modal-device-subtitle" class="text-xs text-slate-400">Main Hospital | FW-MAIN-001 (Core Firewall)</p>
+                    </div>
+                </div>
+                <button onclick="closeModal()" class="text-slate-400 hover:text-slate-200 text-lg"><i class="fa-solid fa-xmark"></i></button>
+            </div>
+
+            <!-- Modal Body -->
+            <div class="p-6 overflow-y-auto space-y-6 flex-1 text-xs">
+                
+                <!-- SIDE-BY-SIDE CONFIG DIFF -->
+                <div>
+                    <h4 class="font-semibold text-slate-200 mb-2 flex items-center gap-2">
+                        <i class="fa-solid fa-code-compare text-cyan-400"></i> Side-by-Side Configuration Diff
+                    </h4>
+                    <div class="grid grid-cols-2 gap-4 font-mono text-[11px]">
+                        <div class="bg-slate-950 p-3 rounded-lg border border-slate-800">
+                            <span class="text-slate-500 text-[10px] uppercase font-bold block mb-2">Approved Baseline Configuration</span>
+                            <div id="diff-baseline-box" class="text-emerald-400 font-bold p-2 bg-emerald-500/10 rounded border border-emerald-500/20">
+                                telnet_enabled: false
+                            </div>
+                        </div>
+                        <div class="bg-slate-950 p-3 rounded-lg border border-slate-800">
+                            <span class="text-slate-500 text-[10px] uppercase font-bold block mb-2">Current Active Configuration (Drift)</span>
+                            <div id="diff-current-box" class="text-red-400 font-bold p-2 bg-red-500/10 rounded border border-red-500/20">
+                                telnet_enabled: true
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- EVIDENCE BREAKDOWN -->
+                <div class="bg-slate-950 p-4 rounded-xl border border-slate-800">
+                    <h4 class="font-semibold text-slate-200 mb-2 flex items-center gap-2">
+                        <i class="fa-solid fa-file-shield text-amber-400"></i> Automated Evidence Summary
+                    </h4>
+                    <pre id="modal-evidence-text" class="text-slate-300 font-mono whitespace-pre-wrap leading-relaxed text-[11px]"></pre>
+                </div>
+
+                <!-- RECOMMENDED ACTION & REMEDIATION -->
+                <div class="bg-cyan-950/30 p-4 rounded-xl border border-cyan-500/20">
+                    <h4 class="font-semibold text-cyan-300 mb-2 flex items-center gap-2">
+                        <i class="fa-solid fa-wrench text-cyan-400"></i> Recommended Remediation & CLI Commands
+                    </h4>
+                    <pre id="modal-remediation-text" class="text-slate-200 font-mono bg-slate-950 p-3 rounded-lg border border-slate-800 text-[11px] whitespace-pre-wrap"></pre>
+                </div>
+
+            </div>
+
+            <!-- Modal Footer -->
+            <div class="p-4 border-t border-slate-800 bg-slate-900/90 flex justify-end space-x-3">
+                <button onclick="closeModal()" class="px-4 py-2 bg-slate-800 text-slate-300 rounded-lg hover:bg-slate-700 text-xs">Close</button>
+            </div>
+        </div>
+    </div>
+
+    <!-- FRONTEND APPLICATION SCRIPT -->
+    <script>
+        let dashboardData = {};
+        let findingsData = [];
+        let sitesData = [];
+        let devicesData = [];
+        let baselinesData = [];
+        let complianceData = [];
+        let ticketsData = [];
+        let auditData = [];
+
+        let siteChartInstance = null;
+        let riskChartInstance = null;
+
+        // Initialize application on page load
+        window.addEventListener('DOMContentLoaded', () => {
+            fetchAllData();
+        });
+
+        async function fetchAllData() {
+            try {
+                const [resDash, resFindings, resSites, resDevices, resBaselines, resCompliance, resTickets, resAudit, resQuality] = await Promise.all([
+                    fetch('/dashboard/summary').then(r => r.json()),
+                    fetch('/drift/findings').then(r => r.json()),
+                    fetch('/sites').then(r => r.json()),
+                    fetch('/devices').then(r => r.json()),
+                    fetch('/baselines').then(r => r.json()),
+                    fetch('/compliance/rules').then(r => r.json()),
+                    fetch('/tickets').then(r => r.json()),
+                    fetch('/audit/logs').then(r => r.json()),
+                    fetch('/audit/data-quality').then(r => r.json())
+                ]);
+
+                dashboardData = resDash;
+                findingsData = resFindings;
+                sitesData = resSites;
+                devicesData = resDevices;
+                baselinesData = resBaselines;
+                complianceData = resCompliance;
+                ticketsData = resTickets;
+                auditData = resAudit;
+
+                renderDashboard();
+                renderFindings();
+                renderSites();
+                renderDevices();
+                renderBaselines();
+                renderCompliance();
+                renderTickets();
+                renderAudit();
+                renderQuality(resQuality);
+            } catch (err) {
+                console.error("Error fetching sentinel data:", err);
+            }
+        }
+
+        function switchTab(tabId) {
+            document.querySelectorAll("main > div > div[id^='view-']").forEach(el => el.classList.add("hidden"));
+            document.getElementById(`view-${tabId}`).classList.remove("hidden");
+
+            document.querySelectorAll(".nav-btn").forEach(btn => {
+                btn.className = "nav-btn w-full flex items-center space-x-3 px-3 py-2.5 rounded-lg text-sm font-medium text-slate-400 hover:text-slate-200 hover:bg-slate-800/60 transition-all";
+            });
+            const activeNav = document.getElementById(`nav-${tabId}`);
+            if (activeNav) {
+                activeNav.className = "nav-btn w-full flex items-center space-x-3 px-3 py-2.5 rounded-lg text-sm font-medium transition-all bg-cyan-500/10 text-cyan-400 border border-cyan-500/20";
+            }
+
+            const titles = {
+                dashboard: "Security Command Dashboard",
+                findings: "Configuration Drift Findings",
+                sites: "Hospital Network Sites & Campuses",
+                devices: "Device Inventory & Status",
+                baselines: "Approved Configuration Baselines",
+                compliance: "Compliance Rules & Security Policies",
+                tickets: "CAB Change Ticket Registry",
+                quality: "Automated Data Cleaning & Quality Pipeline",
+                audit: "Immutable System Audit Logs"
+            };
+            document.getElementById("page-title").innerText = titles[tabId] || "Drift Sentinel";
+        }
+
+        function renderDashboard() {
+            if (!dashboardData.kpis) return;
+            const k = dashboardData.kpis;
+            document.getElementById("kpi-sites").innerText = k.total_sites;
+            document.getElementById("kpi-devices").innerText = k.total_devices;
+            document.getElementById("kpi-findings").innerText = k.total_findings;
+            document.getElementById("kpi-unauthorized").innerText = k.unauthorized_changes;
+            document.getElementById("kpi-critical").innerText = k.critical_findings;
+            document.getElementById("badge-critical").innerText = k.critical_findings;
+
+            // Render Site Drift Chart
+            const ctxSite = document.getElementById("chart-site-drift").getContext("2d");
+            if (siteChartInstance) siteChartInstance.destroy();
+            siteChartInstance = new Chart(ctxSite, {
+                type: 'bar',
+                data: {
+                    labels: dashboardData.charts.drift_by_site.map(s => s.site_name),
+                    datasets: [{
+                        label: 'Drift Findings',
+                        data: dashboardData.charts.drift_by_site.map(s => s.findings),
+                        backgroundColor: '#38bdf8',
+                        borderRadius: 6
+                    }]
+                },
+                options: {
+                    responsive: true,
+                    maintainAspectRatio: false,
+                    plugins: { legend: { display: false } },
+                    scales: {
+                        x: { ticks: { color: '#94a3b8', font: { size: 10 } }, grid: { display: false } },
+                        y: { ticks: { color: '#94a3b8', font: { size: 10 } }, grid: { color: 'rgba(255,255,255,0.05)' } }
+                    }
+                }
+            });
+
+            // Render Risk Donut Chart
+            const ctxRisk = document.getElementById("chart-risk-dist").getContext("2d");
+            if (riskChartInstance) riskChartInstance.destroy();
+            riskChartInstance = new Chart(ctxRisk, {
+                type: 'doughnut',
+                data: {
+                    labels: dashboardData.charts.risk_distribution.map(r => r.severity),
+                    datasets: [{
+                        data: dashboardData.charts.risk_distribution.map(r => r.count),
+                        backgroundColor: ['#ef4444', '#f97316', '#eab308', '#3b82f6'],
+                        borderWidth: 0
+                    }]
+                },
+                options: {
+                    responsive: true,
+                    maintainAspectRatio: false,
+                    plugins: { legend: { position: 'bottom', labels: { color: '#cbd5e1', font: { size: 10 } } } }
+                }
+            });
+
+            // Top Risky Devices Table
+            const tbody = document.getElementById("table-top-risky");
+            tbody.innerHTML = dashboardData.charts.top_risky_devices.map(d => `
+                <tr class="hover:bg-slate-800/40">
+                    <td class="py-2.5 font-mono text-cyan-400">${d.device_id}</td>
+                    <td class="py-2.5 font-bold">${d.hostname}</td>
+                    <td class="py-2.5">Main Campus</td>
+                    <td class="py-2.5">Infrastructure</td>
+                    <td class="py-2.5"><span class="px-2 py-0.5 rounded bg-red-500/20 text-red-400 font-bold border border-red-500/30">${d.risk_score}/100</span></td>
+                    <td class="py-2.5"><button onclick="switchTab('findings')" class="text-cyan-400 hover:underline">Inspect</button></td>
+                </tr>
+            `).join('');
+        }
+
+        function renderFindings() {
+            const search = document.getElementById("filter-search").value.toLowerCase();
+            const sevFilter = document.getElementById("filter-severity").value;
+            const authFilter = document.getElementById("filter-auth").value;
+
+            const filtered = findingsData.filter(f => {
+                const matchSearch = f.hostname.toLowerCase().includes(search) || f.device_id.toLowerCase().includes(search) || f.finding_id.toLowerCase().includes(search);
+                const matchSev = !sevFilter || f.severity === sevFilter;
+                const matchAuth = !authFilter || f.authorization_status === authFilter;
+                return matchSearch && matchSev && matchAuth;
+            });
+
+            document.getElementById("findings-count-label").innerText = `Showing ${filtered.length} of ${findingsData.length} findings`;
+
+            const tbody = document.getElementById("table-findings");
+            tbody.innerHTML = filtered.map(f => {
+                const sevColor = f.severity === 'CRITICAL' ? 'bg-red-500/20 text-red-400 border-red-500/30' :
+                                 f.severity === 'HIGH' ? 'bg-orange-500/20 text-orange-400 border-orange-500/30' :
+                                 'bg-yellow-500/20 text-yellow-400 border-yellow-500/30';
+                
+                const authColor = f.authorization_status === 'Authorized' ? 'text-emerald-400' : 'text-red-400 font-semibold';
+
+                return `
+                    <tr class="hover:bg-slate-800/40">
+                        <td class="px-4 py-3 font-mono text-cyan-400 font-semibold">${f.finding_id}</td>
+                        <td class="px-4 py-3">
+                            <span class="font-bold block text-slate-200">${f.hostname}</span>
+                            <span class="text-[10px] text-slate-500">${f.site_id} (${f.device_id})</span>
+                        </td>
+                        <td class="px-4 py-3 font-mono text-slate-300">${f.field_name}</td>
+                        <td class="px-4 py-3 font-mono">
+                            <span class="text-emerald-400">${f.baseline_value}</span> &rarr; <span class="text-red-400">${f.current_value}</span>
+                        </td>
+                        <td class="px-4 py-3"><span class="px-2 py-0.5 rounded text-[10px] font-bold border ${sevColor}">${f.severity}</span></td>
+                        <td class="px-4 py-3 ${authColor}">${f.authorization_status}</td>
+                        <td class="px-4 py-3 font-bold text-slate-200">${f.risk_score}</td>
+                        <td class="px-4 py-3 text-right">
+                            <button onclick="openFindingModal('${f.finding_id}')" class="px-2.5 py-1 bg-slate-800 hover:bg-slate-700 text-cyan-300 rounded border border-slate-700 text-[11px]">Inspect Diff</button>
+                        </td>
+                    </tr>
+                `;
+            }).join('');
+        }
+
+        function openFindingModal(findingId) {
+            const f = findingsData.find(item => item.finding_id === findingId);
+            if (!f) return;
+
+            document.getElementById("modal-finding-id").innerText = f.finding_id;
+            document.getElementById("modal-device-subtitle").innerText = `${f.site_id} | ${f.hostname} (${f.device_id})`;
+            document.getElementById("diff-baseline-box").innerText = `${f.field_name}: ${f.baseline_value}`;
+            document.getElementById("diff-current-box").innerText = `${f.field_name}: ${f.current_value}`;
+            document.getElementById("modal-evidence-text").innerText = f.evidence;
+            document.getElementById("modal-remediation-text").innerText = f.recommended_action;
+
+            document.getElementById("modal-finding-details").classList.remove("hidden");
+        }
+
+        function closeModal() {
+            document.getElementById("modal-finding-details").classList.add("hidden");
+        }
+
+        function renderSites() {
+            const grid = document.getElementById("sites-grid");
+            grid.innerHTML = sitesData.map(s => `
+                <div class="glass-card p-4 rounded-xl border border-slate-800 space-y-3">
+                    <div class="flex justify-between items-start">
+                        <div>
+                            <h4 class="font-bold text-slate-200 text-sm">${s.name}</h4>
+                            <span class="text-xs text-cyan-400 font-mono">${s.site_id} (${s.code})</span>
+                        </div>
+                        <span class="px-2 py-0.5 text-[10px] rounded bg-slate-800 text-slate-300 font-semibold">Criticality: ${s.criticality}</span>
+                    </div>
+                    <div class="text-xs text-slate-400 flex justify-between border-t border-slate-800/80 pt-3">
+                        <span>Active Monitoring: Enabled</span>
+                        <span class="text-emerald-400 font-semibold">ONLINE</span>
+                    </div>
+                </div>
+            `).join('');
+        }
+
+        function renderDevices() {
+            const tbody = document.getElementById("table-devices");
+            tbody.innerHTML = devicesData.map(d => `
+                <tr class="hover:bg-slate-800/40">
+                    <td class="p-3 font-mono text-cyan-400">${d.device_id}</td>
+                    <td class="p-3 font-bold">${d.hostname}</td>
+                    <td class="p-3">${d.site_id}</td>
+                    <td class="p-3">${d.device_type}</td>
+                    <td class="p-3 text-slate-400">${d.network_zone}</td>
+                    <td class="p-3 font-mono text-slate-300">${d.ip_address}</td>
+                    <td class="p-3 font-mono text-slate-400">${d.firmware_version}</td>
+                    <td class="p-3"><span class="px-2 py-0.5 rounded bg-emerald-500/20 text-emerald-400 text-[10px] font-bold">${d.status}</span></td>
+                </tr>
+            `).join('');
+        }
+
+        function renderBaselines() {
+            const grid = document.getElementById("baselines-grid");
+            grid.innerHTML = baselinesData.map(b => `
+                <div class="glass-card p-4 rounded-xl border border-slate-800 space-y-3">
+                    <div class="flex justify-between items-center">
+                        <h4 class="font-bold text-slate-200 text-sm">${b.name}</h4>
+                        <span class="px-2 py-0.5 text-[10px] rounded bg-cyan-500/20 text-cyan-400 font-bold">v${b.version}</span>
+                    </div>
+                    <pre class="bg-slate-950 p-3 rounded text-[11px] font-mono text-slate-300 overflow-x-auto max-h-36">${b.approved_config_json}</pre>
+                </div>
+            `).join('');
+        }
+
+        function renderCompliance() {
+            const tbody = document.getElementById("table-compliance");
+            tbody.innerHTML = complianceData.map(c => `
+                <tr class="hover:bg-slate-800/40">
+                    <td class="p-3 font-mono text-cyan-400">${c.rule_id}</td>
+                    <td class="p-3 font-bold">${c.rule_name}</td>
+                    <td class="p-3">${c.category}</td>
+                    <td class="p-3 font-mono text-slate-300">${c.field}</td>
+                    <td class="p-3 font-mono text-emerald-400">${c.expected_value}</td>
+                    <td class="p-3"><span class="px-2 py-0.5 rounded bg-red-500/20 text-red-400 font-bold text-[10px]">${c.severity}</span></td>
+                    <td class="p-3"><span class="text-emerald-400 font-semibold"><i class="fa-solid fa-check"></i> ACTIVE</span></td>
+                </tr>
+            `).join('');
+        }
+
+        function renderTickets() {
+            const tbody = document.getElementById("table-tickets");
+            tbody.innerHTML = ticketsData.slice(0, 50).map(t => `
+                <tr class="hover:bg-slate-800/40">
+                    <td class="p-3 font-mono text-cyan-400">${t.ticket_id}</td>
+                    <td class="p-3">${t.site_id} (${t.device_id || 'ALL'})</td>
+                    <td class="p-3">${t.requester}</td>
+                    <td class="p-3 text-slate-400">${t.approver || 'N/A'}</td>
+                    <td class="p-3 text-slate-300">${t.description}</td>
+                    <td class="p-3 text-slate-400 font-mono text-[10px]">${t.start_time}</td>
+                    <td class="p-3 text-slate-400 font-mono text-[10px]">${t.end_time}</td>
+                    <td class="p-3"><span class="px-2 py-0.5 rounded ${t.status === 'Approved' ? 'bg-emerald-500/20 text-emerald-400' : 'bg-slate-800 text-slate-400'} font-bold text-[10px]">${t.status}</span></td>
+                </tr>
+            `).join('');
+        }
+
+        function renderAudit() {
+            const tbody = document.getElementById("table-audit");
+            tbody.innerHTML = auditData.map(a => `
+                <tr class="hover:bg-slate-800/40">
+                    <td class="p-3 text-slate-400 font-mono text-[10px]">${a.timestamp}</td>
+                    <td class="p-3 font-bold">${a.user_email}</td>
+                    <td class="p-3 text-slate-400">${a.user_role}</td>
+                    <td class="p-3 text-cyan-400 font-semibold">${a.action}</td>
+                    <td class="p-3 text-slate-300">${a.object_type} (${a.object_id || ''})</td>
+                    <td class="p-3 text-slate-400">${a.reason || ''}</td>
+                </tr>
+            `).join('');
+        }
+
+        function renderQuality(q) {
+            document.getElementById("quality-kpis").innerHTML = `
+                <div class="glass-card p-4 rounded-xl border border-slate-800">
+                    <p class="text-xs text-slate-400">Total Cleaned Records</p>
+                    <h3 class="text-2xl font-bold text-cyan-400 mt-1">${q.clean_configs_count}</h3>
+                </div>
+                <div class="glass-card p-4 rounded-xl border border-slate-800">
+                    <p class="text-xs text-slate-400">Duplicates Removed</p>
+                    <h3 class="text-2xl font-bold text-amber-400 mt-1">${q.removed_duplicates}</h3>
+                </div>
+                <div class="glass-card p-4 rounded-xl border border-slate-800">
+                    <p class="text-xs text-slate-400">Invalid IPs / VLANs Corrected</p>
+                    <h3 class="text-2xl font-bold text-emerald-400 mt-1">${q.invalid_ips_cleaned}</h3>
+                </div>
+            `;
+            document.getElementById("quality-json-display").innerText = JSON.stringify(q, null, 2);
+        }
+
+        async function triggerScan() {
+            try {
+                const res = await fetch('/drift/scan', { method: 'POST' }).then(r => r.json());
+                alert(`Automated Scan Complete!\nScanned: ${res.devices_scanned} devices\nNew Findings: ${res.findings_count}\nCritical: ${res.critical_count}`);
+                fetchAllData();
+            } catch (err) {
+                alert("Scan error: " + err);
+            }
+        }
+
+        function changeRole(newRole) {
+            alert(`Switched RBAC context to role: ${newRole}`);
+        }
+    </script>
+</body>
+</html>

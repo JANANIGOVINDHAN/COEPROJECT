@@ -1,0 +1,32 @@
+rule_id,rule_name,category,description,severity,field,operator,expected_value
+RULE-001,Disable Telnet,Security,Telnet protocol must be disabled across all devices.,CRITICAL,telnet_enabled,==,false
+RULE-002,Enable SSH v2,Security,SSH v2 must be enabled for secure remote management.,HIGH,ssh_enabled,==,true
+RULE-003,Guest Wi-Fi Isolation,Segmentation,Guest Wi-Fi traffic must be strictly isolated from internal networks.,CRITICAL,guest_isolation,==,true
+RULE-004,No VLAN Overlap,Segmentation,Clinical and Guest VLANs must not share subnet segment or tags.,HIGH,network_segmentation,==,true
+RULE-005,Centralized Syslog,Logging,Logging must be enabled and set to centralized syslog server.,MEDIUM,logging_enabled,==,true
+RULE-006,NTP Time Sync,Operations,NTP time synchronization must be enabled.,MEDIUM,ntp_enabled,==,true
+RULE-007,AES-256 Encryption,Security,Encryption must be enabled for all wireless and WAN traffic.,HIGH,encryption_enabled,==,true
+RULE-008,HTTPS Admin Access,Security,HTTPS must be enforced for admin web portals.,HIGH,https_enabled,==,true
+RULE-009,Medical IoT Segmentation,Segmentation,Medical IoT devices must be isolated on VLAN 300-399.,CRITICAL,port_security,==,true
+RULE-010,Firewall Default Deny,Firewall,Firewall policies must enforce explicit default deny rule.,CRITICAL,firewall_policy,contains,DEFAULT_DENY
+RULE-011,SNMP v3 Enforcement,Management,"Legacy SNMP v1/v2c disabled, SNMP v3 mandatory.",HIGH,snmp_version,==,v3
+RULE-012,BPDU Guard Active,Switching,BPDU Guard must be active on access ports.,MEDIUM,bpdu_guard,==,true
+RULE-013,DHCP Snooping Enabled,Switching,DHCP Snooping must prevent rogue DHCP servers.,HIGH,dhcp_snooping,==,true
+RULE-014,Strong Password Policy,Authentication,Complex password policy enforced on local accounts.,MEDIUM,password_policy,==,ENFORCED
+RULE-015,Automated Config Backup,Operations,Nightly configuration backup must be enabled.,LOW,backup_enabled,==,true
+RULE-016,Compliance Standard Metric 16,Segmentation,Standard operational security compliance policy metric #16,LOW,static_routes,==,APPROVED
+RULE-017,Compliance Standard Metric 17,Management,Standard operational security compliance policy metric #17,HIGH,static_routes,==,APPROVED
+RULE-018,Compliance Standard Metric 18,Logging,Standard operational security compliance policy metric #18,LOW,snmp_community,==,APPROVED
+RULE-019,Compliance Standard Metric 19,Segmentation,Standard operational security compliance policy metric #19,HIGH,static_routes,==,APPROVED
+RULE-020,Compliance Standard Metric 20,Operations,Standard operational security compliance policy metric #20,HIGH,dns_server,==,APPROVED
+RULE-021,Compliance Standard Metric 21,Logging,Standard operational security compliance policy metric #21,CRITICAL,static_routes,==,APPROVED
+RULE-022,Compliance Standard Metric 22,Segmentation,Standard operational security compliance policy metric #22,CRITICAL,snmp_community,==,APPROVED
+RULE-023,Compliance Standard Metric 23,Operations,Standard operational security compliance policy metric #23,LOW,static_routes,==,APPROVED
+RULE-024,Compliance Standard Metric 24,Operations,Standard operational security compliance policy metric #24,HIGH,static_routes,==,APPROVED
+RULE-025,Compliance Standard Metric 25,Management,Standard operational security compliance policy metric #25,HIGH,snmp_community,==,APPROVED
+RULE-026,Compliance Standard Metric 26,Operations,Standard operational security compliance policy metric #26,HIGH,dns_server,==,APPROVED
+RULE-027,Compliance Standard Metric 27,Segmentation,Standard operational security compliance policy metric #27,CRITICAL,static_routes,==,APPROVED
+RULE-028,Compliance Standard Metric 28,Segmentation,Standard operational security compliance policy metric #28,CRITICAL,admin_access,==,APPROVED
+RULE-029,Compliance Standard Metric 29,Management,Standard operational security compliance policy metric #29,LOW,static_routes,==,APPROVED
+RULE-030,Compliance Standard Metric 30,Security,Standard operational security compliance policy metric #30,HIGH,static_routes,==,APPROVED
+RULE-031,Compliance Standard Metric 31,Segmentation,Standard operational security compliance policy metric #31,HIGH,spanning_tree,==,APPROVED

@@ -1,0 +1,110 @@
+device_id,hostname,site_id,site_name,device_type,network_zone,ip_address,mac_address,firmware_version,status
+DEV-RESEARCH-SWI-001,research-switch-001,SITE-006,Research Center,Switch,Administration,10.8.77.56,00:50:56:2f:44:28,v7.2.4,ONLINE
+DEV-EMERGENCY-VPN-002,emergency-vpn-gateway-002,SITE-002,Emergency Care Center,VPN Gateway,Management,10.5.138.119,00:50:56:31:52:1a,v17.3.1,ONLINE
+DEV-ADMIN-IOT-003,admin-iot-gateway-003,SITE-010,Administration Center,IoT Gateway,Administration,10.8.5.135,00:50:56:4a:5e:4b,v17.3.1,ONLINE
+DEV-PHARM-VPN-004,pharm-vpn-gateway-004,SITE-004,Pharmacy,VPN Gateway,Management,10.10.199.116,00:50:56:34:1e:12,v15.2(4)S,ONLINE
+DEV-MAIN-IOT-005,main-iot-gateway-005,SITE-001,Main Hospital,IoT Gateway,Medical IoT,10.5.17.121,00:50:56:42:16:4e,v9.1.2,ONLINE
+DEV-CARDIO-IOT-006,cardio-iot-gateway-006,SITE-008,Cardiology Center,IoT Gateway,Medical IoT,10.0.0.1,00:50:56:21:3d:23,v15.2(4)S,ONLINE
+DEV-PEDS-WIR-007,peds-wireless-controller-007,SITE-007,Children's Hospital,Wireless Controller,Medical IoT,10.7.182.166,00:50:56:2f:3d:4c,v7.2.4,ONLINE
+DEV-CARDIO-ACC-008,cardio-access-point-008,SITE-008,Cardiology Center,Access Point,Management,10.4.168.37,00:50:56:0f:22:0b,v9.1.2,ONLINE
+DEV-DIAG-COR-009,diag-core-router-009,SITE-003,Diagnostic Center,Core Router,Clinical,10.9.82.48,00:50:56:0d:5e:1d,v17.3.1,ONLINE
+DEV-PHARM-FIR-010,pharm-firewall-010,SITE-004,Pharmacy,Firewall,Server,10.5.33.4,00:50:56:4b:10:36,v17.3.1,ONLINE
+DEV-CARDIO-VPN-011,cardio-vpn-gateway-011,SITE-008,Cardiology Center,VPN Gateway,Management,10.1.117.28,00:50:56:11:43:5e,v17.3.1,ONLINE
+DEV-MAIN-EDG-012,main-edge-router-012,SITE-001,Main Hospital,Edge Router,Medical IoT,10.8.152.155,00:50:56:26:19:18,v7.2.4,ONLINE
+DEV-ADMIN-WIR-013,admin-wireless-controller-013,SITE-010,Administration Center,Wireless Controller,Clinical,10.6.199.35,00:50:56:2a:2b:19,v17.3.1,ONLINE
+DEV-MAIN-EDG-014,main-edge-router-014,SITE-001,Main Hospital,Edge Router,Management,10.4.182.29,00:50:56:30:43:33,v7.2.4,ONLINE
+DEV-EMERGENCY-IOT-015,emergency-iot-gateway-015,SITE-002,Emergency Care Center,IoT Gateway,Server,10.6.241.29,00:50:56:3f:5a:53,v15.2(4)S,OFFLINE
+DEV-ONCOLOGY-ACC-016,ONCOLOGY-ACCESS-POINT-016,SITE-009,Cancer Center,Access Point,Clinical,10.3.186.147,00:50:56:0c:39:4a,v7.2.4,ONLINE
+DEV-MAIN-SWI-017,main-switch-017,SITE-001,Main Hospital,Switch,Management,10.1.239.247,00:50:56:22:26:15,v17.3.1,ONLINE
+DEV-MAIN-IOT-018,main-iot-gateway-018,SITE-001,Main Hospital,IoT Gateway,Medical IoT,10.1.112.243,00:50:56:1c:4d:50,v15.2(4)S,ONLINE
+DEV-PEDS-COR-019,peds-core-router-019,SITE-007,Children's Hospital,Core Router,Medical IoT,10.4.157.77,00:50:56:0b:21:17,v17.3.1,ONLINE
+DEV-RESEARCH-SWI-020,research-switch-020,SITE-006,Research Center,Switch,Guest,10.3.171.65,00:50:56:16:18:54,v15.2(4)S,ONLINE
+DEV-ADMIN-VPN-021,admin-vpn-gateway-021,SITE-010,Administration Center,VPN Gateway,Administration,10.10.156.175,00:50:56:55:48:1b,v9.1.2,ONLINE
+DEV-EMERGENCY-COR-022,emergency-core-router-022,SITE-002,Emergency Care Center,Core Router,Administration,10.4.148.216,00:50:56:1b:63:5d,v9.1.2,ONLINE
+DEV-PHARM-VPN-023,pharm-vpn-gateway-023,SITE-004,Pharmacy,VPN Gateway,Management,10.4.42.123,00:50:56:63:17:45,v17.3.1,ONLINE
+DEV-ADMIN-FIR-024,admin-firewall-024,SITE-010,Administration Center,Firewall,Administration,10.7.12.2,00:50:56:0f:24:18,v15.2(4)S,ONLINE
+DEV-PEDS-VPN-025,peds-vpn-gateway-025,SITE-007,Children's Hospital,VPN Gateway,Management,10.6.229.119,00:50:56:3e:58:5c,v9.1.2,ONLINE
+DEV-MAIN-VPN-026,main-vpn-gateway-026,SITE-001,Main Hospital,VPN Gateway,Administration,10.4.64.22,00:50:56:0c:3e:30,v17.3.1,ONLINE
+DEV-CLINIC-ACC-027,clinic-access-point-027,SITE-005,Remote Clinic,Access Point,Administration,10.2.195.170,00:50:56:34:18:47,v17.3.1,ONLINE
+DEV-PHARM-FIR-028,pharm-firewall-028,SITE-004,Pharmacy,Firewall,Management,10.9.189.41,00:50:56:53:18:19,v7.2.4,OFFLINE
+DEV-CLINIC-VPN-029,clinic-vpn-gateway-029,SITE-005,Remote Clinic,VPN Gateway,Management,10.6.212.129,00:50:56:16:35:1f,v7.2.4,ONLINE
+DEV-EMERGENCY-FIR-030,emergency-firewall-030,SITE-002,Emergency Care Center,Firewall,Management,10.5.153.90,00:50:56:13:57:31,v17.3.1,OFFLINE
+DEV-RESEARCH-FIR-031,research-firewall-031,SITE-006,Research Center,Firewall,Medical IoT,10.4.199.239,00:50:56:0f:5c:5d,v17.3.1,ONLINE
+DEV-DIAG-SWI-032,diag-switch-032,SITE-003,Diagnostic Center,Switch,Server,10.2.165.10,00:50:56:28:3f:63,v17.3.1,ONLINE
+DEV-CLINIC-ACC-033,clinic-access-point-033,SITE-005,Remote Clinic,Access Point,Management,10.1.105.85,00:50:56:47:4c:63,v7.2.4,OFFLINE
+DEV-CLINIC-ACC-034,clinic-access-point-034,SITE-005,Remote Clinic,Access Point,Server,10.4.45.27,00:50:56:5d:1f:0f,v15.2(4)S,ONLINE
+DEV-PEDS-IOT-035,peds-iot-gateway-035,SITE-007,Children's Hospital,IoT Gateway,Clinical,10.6.106.110,00:50:56:63:5e:0a,v7.2.4,ONLINE
+DEV-DIAG-ACC-036,diag-access-point-036,SITE-003,Diagnostic Center,Access Point,Guest,10.8.250.94,00:50:56:18:1d:20,v17.3.1,ONLINE
+DEV-ONCOLOGY-WIR-037,oncology-wireless-controller-037,SITE-009,Cancer Center,Wireless Controller,Guest,10.6.129.70,00:50:56:3e:41:49,v7.2.4,ONLINE
+DEV-PHARM-EDG-038,pharm-edge-router-038,SITE-004,Pharmacy,Edge Router,Administration,10.7.39.104,00:50:56:5d:57:2d,v9.1.2,ONLINE
+DEV-ONCOLOGY-SWI-039,oncology-switch-039,SITE-009,Cancer Center,Switch,Guest,10.6.30.123,00:50:56:4f:44:49,v9.1.2,ONLINE
+DEV-PEDS-WIR-040,peds-wireless-controller-040,SITE-007,Children's Hospital,Wireless Controller,Server,10.3.103.208,00:50:56:43:0d:10,v15.2(4)S,ONLINE
+DEV-CLINIC-IOT-041,clinic-iot-gateway-041,SITE-005,Remote Clinic,IoT Gateway,Guest,10.10.84.12,00:50:56:11:33:5a,v9.1.2,ONLINE
+DEV-MAIN-SWI-042,main-switch-042,SITE-001,Main Hospital,Switch,Management,10.9.170.59,00:50:56:53:4e:44,v7.2.4,ONLINE
+DEV-MAIN-WIR-043,main-wireless-controller-043,SITE-001,Main Hospital,Wireless Controller,Medical IoT,10.0.0.1,00:50:56:28:42:11,v7.2.4,ONLINE
+DEV-MAIN-SWI-044,main-switch-044,SITE-001,Main Hospital,Switch,Guest,10.2.147.109,00:50:56:51:39:24,v9.1.2,OFFLINE
+DEV-RESEARCH-VPN-045,research-vpn-gateway-045,SITE-006,Research Center,VPN Gateway,Clinical,10.7.57.71,00:50:56:1c:36:0b,v15.2(4)S,ONLINE
+DEV-PEDS-IOT-046,peds-iot-gateway-046,SITE-007,Children's Hospital,IoT Gateway,Guest,10.2.101.237,00:50:56:3f:45:54,v7.2.4,ONLINE
+DEV-PHARM-VPN-047,pharm-vpn-gateway-047,SITE-004,Pharmacy,VPN Gateway,Clinical,10.8.102.177,00:50:56:0a:0f:2a,v9.1.2,ONLINE
+DEV-CLINIC-EDG-048,clinic-edge-router-048,SITE-005,Remote Clinic,Edge Router,Management,10.9.182.202,00:50:56:3d:34:0c,v17.3.1,ONLINE
+DEV-ADMIN-SWI-049,admin-switch-049,SITE-010,Administration Center,Switch,Guest,10.1.106.250,00:50:56:35:4b:15,v15.2(4)S,ONLINE
+DEV-ADMIN-EDG-050,admin-edge-router-050,SITE-010,Administration Center,Edge Router,Server,10.3.12.91,00:50:56:4e:2d:29,v9.1.2,ONLINE
+DEV-CLINIC-VPN-051,clinic-vpn-gateway-051,SITE-005,Remote Clinic,VPN Gateway,Administration,10.3.203.99,00:50:56:5b:43:37,v15.2(4)S,ONLINE
+DEV-EMERGENCY-SWI-052,emergency-switch-052,SITE-002,Emergency Care Center,Switch,Management,10.9.74.46,00:50:56:35:23:51,v7.2.4,ONLINE
+DEV-ONCOLOGY-ACC-053,oncology-access-point-053,SITE-009,Cancer Center,Access Point,Clinical,10.10.94.37,00:50:56:0d:3e:24,v17.3.1,ONLINE
+DEV-PEDS-COR-054,peds-core-router-054,SITE-007,Children's Hospital,Core Router,Medical IoT,10.10.23.249,00:50:56:2f:1e:60,v9.1.2,ONLINE
+DEV-RESEARCH-EDG-055,research-edge-router-055,SITE-006,Research Center,Edge Router,Management,10.9.82.50,00:50:56:1f:28:38,v17.3.1,ONLINE
+DEV-RESEARCH-FIR-056,research-firewall-056,SITE-006,Research Center,Firewall,Administration,10.10.166.245,00:50:56:51:0f:50,v17.3.1,ONLINE
+DEV-RESEARCH-EDG-057,research-edge-router-057,SITE-006,Research Center,Edge Router,Management,10.1.239.224,00:50:56:33:12:3a,v17.3.1,ONLINE
+DEV-EMERGENCY-FIR-058,emergency-firewall-058,SITE-002,Emergency Care Center,Firewall,Medical IoT,10.3.182.221,00:50:56:18:38:2f,v9.1.2,ONLINE
+DEV-ONCOLOGY-IOT-059,oncology-iot-gateway-059,SITE-009,Cancer Center,IoT Gateway,Medical IoT,10.5.65.116,00:50:56:62:4a:3c,v15.2(4)S,ONLINE
+DEV-DIAG-SWI-060,diag-switch-060,SITE-003,Diagnostic Center,Switch,Medical IoT,10.10.133.197,00:50:56:1a:1c:39,v9.1.2,ONLINE
+DEV-ONCOLOGY-FIR-061,oncology-firewall-061,SITE-009,Cancer Center,Firewall,Medical IoT,10.6.218.50,00:50:56:27:25:44,v15.2(4)S,ONLINE
+DEV-CARDIO-SWI-062,cardio-switch-062,SITE-008,Cardiology Center,Switch,Administration,10.10.40.162,00:50:56:0f:45:48,v9.1.2,ONLINE
+DEV-CARDIO-COR-063,cardio-core-router-063,SITE-008,Cardiology Center,Core Router,Server,10.4.212.128,00:50:56:4f:5f:3e,v15.2(4)S,ONLINE
+DEV-MAIN-FIR-064,main-firewall-064,SITE-001,Main Hospital,Firewall,Administration,10.2.92.107,00:50:56:42:61:4a,v15.2(4)S,ONLINE
+DEV-EMERGENCY-COR-065,emergency-core-router-065,SITE-002,Emergency Care Center,Core Router,Guest,10.5.95.192,00:50:56:54:2c:3d,v9.1.2,ONLINE
+DEV-EMERGENCY-SWI-066,emergency-switch-066,SITE-002,Emergency Care Center,Switch,Clinical,10.7.77.142,00:50:56:50:4f:25,v7.2.4,ONLINE
+DEV-DIAG-EDG-067,diag-edge-router-067,SITE-003,Diagnostic Center,Edge Router,Guest,10.8.10.120,00:50:56:53:41:62,v7.2.4,ONLINE
+DEV-CARDIO-ACC-068,cardio-access-point-068,SITE-008,Cardiology Center,Access Point,Guest,10.6.227.75,00:50:56:12:34:57,v9.1.2,OFFLINE
+DEV-PEDS-FIR-069,peds-firewall-069,SITE-007,Children's Hospital,Firewall,Server,10.10.78.161,00:50:56:1e:24:2f,v7.2.4,ONLINE
+DEV-ONCOLOGY-IOT-070,oncology-iot-gateway-070,SITE-009,Cancer Center,IoT Gateway,Administration,10.7.163.44,00:50:56:31:3c:54,v17.3.1,ONLINE
+DEV-MAIN-EDG-071,main-edge-router-071,SITE-001,Main Hospital,Edge Router,Server,10.9.93.229,00:50:56:4a:26:2c,v17.3.1,ONLINE
+DEV-RESEARCH-IOT-072,research-iot-gateway-072,SITE-006,Research Center,IoT Gateway,Clinical,10.1.43.115,00:50:56:32:19:1f,v7.2.4,ONLINE
+DEV-EMERGENCY-IOT-073,emergency-iot-gateway-073,SITE-002,Emergency Care Center,IoT Gateway,Medical IoT,10.2.247.66,00:50:56:2d:37:10,v15.2(4)S,ONLINE
+DEV-CARDIO-SWI-074,cardio-switch-074,SITE-008,Cardiology Center,Switch,Clinical,10.5.114.118,00:50:56:34:0f:43,v17.3.1,ONLINE
+DEV-ONCOLOGY-VPN-075,oncology-vpn-gateway-075,SITE-009,Cancer Center,VPN Gateway,Guest,10.8.201.211,00:50:56:33:2f:41,v17.3.1,ONLINE
+DEV-MAIN-ACC-077,main-access-point-077,SITE-001,Main Hospital,Access Point,Server,10.10.148.244,00:50:56:2a:4e:31,v9.1.2,ONLINE
+DEV-RESEARCH-FIR-078,research-firewall-078,SITE-006,Research Center,Firewall,Administration,10.1.108.105,00:50:56:3c:0a:22,v17.3.1,ONLINE
+DEV-RESEARCH-SWI-079,research-switch-079,SITE-006,Research Center,Switch,Clinical,10.3.248.76,00:50:56:33:14:1c,v15.2(4)S,ONLINE
+DEV-DIAG-EDG-080,diag-edge-router-080,SITE-003,Diagnostic Center,Edge Router,Medical IoT,10.5.117.249,00:50:56:5a:61:4d,v15.2(4)S,ONLINE
+DEV-EMERGENCY-SWI-081,emergency-switch-081,SITE-002,Emergency Care Center,Switch,Clinical,10.4.10.176,00:50:56:41:1c:56,v17.3.1,ONLINE
+DEV-CLINIC-SWI-082,clinic-switch-082,SITE-005,Remote Clinic,Switch,Clinical,10.8.153.73,00:50:56:41:51:11,v9.1.2,ONLINE
+DEV-PHARM-ACC-083,pharm-access-point-083,SITE-004,Pharmacy,Access Point,Guest,10.7.204.180,00:50:56:41:0c:18,v7.2.4,ONLINE
+DEV-DIAG-WIR-084,diag-wireless-controller-084,SITE-003,Diagnostic Center,Wireless Controller,Management,10.0.0.1,00:50:56:31:0a:3c,v15.2(4)S,ONLINE
+DEV-CARDIO-EDG-085,cardio-edge-router-085,SITE-008,Cardiology Center,Edge Router,Server,10.1.153.6,00:50:56:15:1f:51,v7.2.4,ONLINE
+DEV-RESEARCH-FIR-086,research-firewall-086,SITE-006,Research Center,Firewall,Medical IoT,10.8.151.116,00:50:56:5d:23:17,v9.1.2,ONLINE
+DEV-CLINIC-FIR-087,clinic-firewall-087,SITE-005,Remote Clinic,Firewall,Server,10.8.138.73,00:50:56:31:3a:2d,v17.3.1,OFFLINE
+DEV-CARDIO-FIR-088,cardio-firewall-088,SITE-008,Cardiology Center,Firewall,Clinical,10.2.30.8,00:50:56:3d:3b:2e,v15.2(4)S,ONLINE
+DEV-CARDIO-FIR-089,cardio-firewall-089,SITE-008,Cardiology Center,Firewall,Clinical,10.8.149.166,00:50:56:21:56:15,v17.3.1,ONLINE
+DEV-MAIN-ACC-090,main-access-point-090,SITE-001,Main Hospital,Access Point,Medical IoT,10.6.103.188,00:50:56:2f:0f:13,v17.3.1,ONLINE
+DEV-MAIN-FIR-091,main-firewall-091,SITE-001,Main Hospital,Firewall,Guest,10.2.31.174,00:50:56:52:28:15,v17.3.1,ONLINE
+DEV-DIAG-SWI-092,diag-switch-092,SITE-003,Diagnostic Center,Switch,Administration,10.2.110.123,00:50:56:59:61:27,v15.2(4)S,ONLINE
+DEV-ADMIN-FIR-093,admin-firewall-093,SITE-010,Administration Center,Firewall,Medical IoT,10.10.181.8,00:50:56:5f:4c:63,v17.3.1,ONLINE
+DEV-EMERGENCY-VPN-094,emergency-vpn-gateway-094,SITE-002,Emergency Care Center,VPN Gateway,Clinical,10.1.80.22,00:50:56:3d:3a:39,v7.2.4,ONLINE
+DEV-PEDS-WIR-095,peds-wireless-controller-095,SITE-007,Children's Hospital,Wireless Controller,Clinical,10.5.140.133,00:50:56:5a:17:5e,v15.2(4)S,ONLINE
+DEV-EMERGENCY-SWI-096,emergency-switch-096,SITE-002,Emergency Care Center,Switch,Clinical,10.9.137.22,00:50:56:61:52:5b,v15.2(4)S,ONLINE
+DEV-CLINIC-WIR-097,clinic-wireless-controller-097,SITE-005,Remote Clinic,Wireless Controller,Server,10.10.74.182,00:50:56:39:2f:24,v7.2.4,ONLINE
+DEV-CLINIC-VPN-098,clinic-vpn-gateway-098,SITE-005,Remote Clinic,VPN Gateway,Clinical,10.7.160.127,00:50:56:44:33:0c,v7.2.4,ONLINE
+DEV-EMERGENCY-SWI-099,emergency-switch-099,SITE-002,Emergency Care Center,Switch,Administration,10.6.143.115,00:50:56:5f:23:57,v9.1.2,OFFLINE
+DEV-RESEARCH-SWI-100,research-switch-100,SITE-006,Research Center,Switch,Server,10.3.181.56,00:50:56:61:27:19,v9.1.2,ONLINE
+DEV-PHARM-FIR-101,pharm-firewall-101,SITE-004,Pharmacy,Firewall,Medical IoT,10.3.241.22,00:50:56:57:43:32,v7.2.4,ONLINE
+DEV-PHARM-VPN-102,pharm-vpn-gateway-102,SITE-004,Pharmacy,VPN Gateway,Server,10.8.95.52,00:50:56:17:16:53,v17.3.1,ONLINE
+DEV-DIAG-ACC-103,diag-access-point-103,SITE-003,Diagnostic Center,Access Point,Server,10.1.190.110,00:50:56:16:33:0a,v15.2(4)S,ONLINE
+DEV-PEDS-ACC-104,peds-access-point-104,SITE-007,Children's Hospital,Access Point,Management,10.1.54.5,00:50:56:50:17:46,v7.2.4,ONLINE
+DEV-ADMIN-COR-105,admin-core-router-105,SITE-010,Administration Center,Core Router,Management,10.0.0.1,00:50:56:3b:24:1b,v9.1.2,ONLINE
+DEV-PHARM-COR-106,pharm-core-router-106,SITE-004,Pharmacy,Core Router,Clinical,10.1.121.197,00:50:56:61:17:3e,v9.1.2,ONLINE
+DEV-PHARM-IOT-107,pharm-iot-gateway-107,SITE-004,Pharmacy,IoT Gateway,Server,10.0.0.1,00:50:56:10:36:24,v15.2(4)S,ONLINE
+DEV-DIAG-FIR-108,diag-firewall-108,SITE-003,Diagnostic Center,Firewall,Management,10.7.170.112,00:50:56:4e:52:0e,v7.2.4,ONLINE
+DEV-CLINIC-ACC-109,clinic-access-point-109,SITE-005,Remote Clinic,Access Point,Management,10.2.209.153,00:50:56:38:18:3b,v15.2(4)S,ONLINE
+DEV-CARDIO-IOT-110,cardio-iot-gateway-110,SITE-008,Cardiology Center,IoT Gateway,Management,10.0.0.1,00:50:56:42:4c:48,v7.2.4,ONLINE

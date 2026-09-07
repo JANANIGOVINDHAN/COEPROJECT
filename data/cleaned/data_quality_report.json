@@ -1,0 +1,12 @@
+{
+  "raw_devices": 113,
+  "raw_configs": 10550,
+  "raw_tickets": 5200,
+  "raw_rules": 31,
+  "raw_events": 20500,
+  "removed_duplicates": 53,
+  "fixed_missing_values": 0,
+  "invalid_ips_cleaned": 6,
+  "normalized_booleans": 12,
+  "clean_configs_count": 10404
+}

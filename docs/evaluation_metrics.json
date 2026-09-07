@@ -1,0 +1,46 @@
+{
+  "model_name": "Random Forest Risk Classifier",
+  "train_samples": 8323,
+  "test_samples": 2081,
+  "accuracy": 1.0,
+  "precision": 1.0,
+  "recall": 1.0,
+  "f1_score": 1.0,
+  "confusion_matrix": [
+    [
+      1761,
+      0,
+      0,
+      0
+    ],
+    [
+      0,
+      92,
+      0,
+      0
+    ],
+    [
+      0,
+      0,
+      225,
+      0
+    ],
+    [
+      0,
+      0,
+      0,
+      3
+    ]
+  ],
+  "feature_importances": {
+    "telnet_num": 0.0767,
+    "ssh_num": 0.0,
+    "logging_num": 0.0332,
+    "guest_iso_num": 0.0927,
+    "dhcp_snoop_num": 0.003,
+    "security_weakening_score": 0.2199,
+    "segmentation_risk_score": 0.0136,
+    "has_authorized_ticket": 0.2908,
+    "num_changed_fields": 0.2701
+  }
+}
