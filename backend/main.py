@@ -6,7 +6,10 @@ from fastapi.responses import HTMLResponse, FileResponse
 
 from backend.core.config import settings
 from backend.core.database import engine, Base
-from backend.api import auth, dashboard, devices, configurations, baselines, drift, compliance, tickets, remediation, reports, audit
+from backend.api import (
+    auth, dashboard, devices, configurations, baselines, 
+    drift, compliance, tickets, remediation, reports, audit, ml_metrics
+)
 
 # Initialize database tables
 Base.metadata.create_all(bind=engine)
@@ -14,7 +17,7 @@ Base.metadata.create_all(bind=engine)
 app = FastAPI(
     title=settings.PROJECT_NAME,
     description="Hospital Network Configuration Drift Sentinel API - Continuous Drift Detection, Risk Scoring, Compliance, Authorization & Remediation Platform",
-    version="1.0.0"
+    version="2.0.0"
 )
 
 # Configure CORS
@@ -38,6 +41,7 @@ app.include_router(tickets.router)
 app.include_router(remediation.router)
 app.include_router(reports.router)
 app.include_router(audit.router)
+app.include_router(ml_metrics.router)
 
 @app.get("/health")
 def health_check():
@@ -45,7 +49,8 @@ def health_check():
         "status": "HEALTHY",
         "service": settings.PROJECT_NAME,
         "database": "CONNECTED",
-        "ml_engine": "ACTIVE"
+        "ml_engine": "ACTIVE",
+        "phase": "PHASE_2_ACTIVE"
     }
 
 # Mount static frontend build or embedded single-page app if available
@@ -72,11 +77,12 @@ def serve_root():
     </head>
     <body>
         <div class="card">
-            <h2>Hospital Network Configuration Drift Sentinel API</h2>
-            <p>Backend API service is running successfully.</p>
+            <h2>Hospital Network Configuration Drift Sentinel API - Phase 2</h2>
+            <p>Backend API service & ML Sentinel Engine running successfully.</p>
             <ul>
                 <li><a href="/docs">Interactive API Documentation (Swagger)</a></li>
-                <li><a href="/redoc">ReDoc Documentation</a></li>
+                <li><a href="/api/ml/metrics">ML Sentinel Performance Metrics</a></li>
+                <li><a href="/dashboard/trends">Historical Trends & MTTR Analytics</a></li>
                 <li><a href="/health">Health Status Check</a></li>
             </ul>
         </div>

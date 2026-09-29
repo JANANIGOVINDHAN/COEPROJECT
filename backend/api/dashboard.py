@@ -7,6 +7,7 @@ from backend.models.device import Device, Site
 from backend.models.drift import DriftFinding, ScanRun
 from backend.models.compliance import ComplianceResult
 from backend.models.ticket import ChangeTicket
+from backend.services.trend_analyzer import TrendAnalyzerService
 
 router = APIRouter(prefix="/dashboard", tags=["Dashboard"])
 
@@ -90,3 +91,10 @@ def get_dashboard_summary(db: Session = Depends(get_db)):
             "top_risky_devices": top_risky_devices
         }
     }
+
+@router.get("/trends")
+def get_dashboard_trends(db: Session = Depends(get_db)):
+    """
+    Phase 2: Historical drift velocity trends, MTTR, and site vulnerability matrix.
+    """
+    return TrendAnalyzerService.get_historical_trends(db)
